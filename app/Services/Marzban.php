@@ -6,6 +6,7 @@ use App\Models\Server;
 use App\Models\UsersMarzban;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 
 class Marzban
@@ -90,15 +91,16 @@ class Marzban
 
         try {
             $data = self::listAllUser();
-
+            $total = $data['total'];
             foreach ($data['users'] as $item) {
                 $username = $item['username'];
-                $find = UsersMarzban::where("username",$username)->first();
+                $find = UsersMarzban::where(DB::raw('BINARY `username`'), $username)->where('server_id', self::$detailServer->id)->first();
                 $expire = Carbon::createFromTimestamp($item['expire']);
                 if ($find){
                     $find->expired_at = $expire;
                     $find->server_id = self::$detailServer->id;
                     $find->save();
+                    info("Update user: " . $username);
                     continue;
                 }
                 $user = new UsersMarzban();
@@ -110,6 +112,8 @@ class Marzban
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }
+
+        return $total;
     }
 
     public static function test()
