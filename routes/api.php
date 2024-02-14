@@ -35,16 +35,16 @@ Route::prefix('users-marzban')->controller(UserMarzbanController::class)->group(
 
 Route::get('/users/sync', function () {
     $servers = App\Models\Server::all();
-    $servers->map(function ($server) {
+    $total = $servers->map(function ($server) {
         $marzban = new Marzban($server->id);
-        $marzban->synchronize();
+        return [ 'server' => $server->name, 'total' => $marzban->synchronize(), 'count' => $server->usersMarzban()->count() ];
     });
 
-    return ResponseHelpers::success('success');
+    return ResponseHelpers::success($total);
 });
 
 
 Route::get('/test', function () {
     $marzban = new Marzban(1);
-    return response()->json($marzban->test()['users']);
+    return response()->json($marzban->test());
 });
