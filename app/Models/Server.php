@@ -10,4 +10,9 @@ class Server extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
+
+    public function usersMarzban()
+    {
+        return $this->hasMany(UsersMarzban::class);
+    }
 }
