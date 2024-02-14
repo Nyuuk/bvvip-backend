@@ -18,5 +18,22 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+        \App\Models\Server::create([
+            'name' => "id",
+            'ip' => 'id2.bukanvvip.my.id',
+            'port' => '8000',
+            'username' => 'asep',
+            'password' => 'asepasep1010',
+            'token' => null
+        ]);
+        \App\Models\Server::create([
+            'name' => "sg",
+            'ip' => 'sg.bukanvvip.my.id',
+            'port' => '8000',
+            'username' => 'asep',
+            'password' => 'asepasep1010',
+            'token' => null
+        ]);
+
     }
 }
