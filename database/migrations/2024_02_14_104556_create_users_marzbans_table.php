@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('users_marzbans', function (Blueprint $table) {
             $table->id();
-            $table->string('username')->unique();
+            $table->string('username');
             $table->string('number')->nullable();
             $table->foreignId('server_id');
             $table->foreign('server_id')->references('id')->on('servers');
