@@ -1,7 +1,9 @@
 <?php
 
 use App\Helpers\ResponseHelpers;
+use App\Http\Controllers\api\AuthController;
 use App\Http\Controllers\api\ServersController;
+use App\Http\Controllers\api\UserController;
 use App\Http\Controllers\api\UserMarzbanController;
 use App\Services\Marzban;
 use Illuminate\Http\Request;
@@ -22,6 +24,15 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
+
+Route::prefix('auth')->group(function () {
+    Route::controller(AuthController::class)->group(function () {
+        Route::post('/create-token', 'getTokenByPasswordAndEmail');
+        Route::get('/revoke-token', 'revokeToken')->middleware('auth:sanctum');
+        Route::get('/status', 'status')->middleware('auth:sanctum');
+    });
+    Route::post('/register', [UserController::class, 'store']);
+});
 
 Route::resource('servers', ServersController::class);
 // Route::resource('user-marzban', UserMarzbanController::class);
