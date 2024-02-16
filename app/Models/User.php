@@ -42,4 +42,24 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function userAdmin()
+    {
+        return $this->where('role', 'admin');
+    }
+
+    public function userDeveloper()
+    {
+        return $this->where('role', 'developer');
+    }
+
+    public function userReseller()
+    {
+        return $this->where('role', 'reseller');
+    }
+
+    public function userFree()
+    {
+        return $this->where('role', 'free');
+    }
 }
