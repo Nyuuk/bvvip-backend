@@ -32,7 +32,7 @@ class AuthController extends Controller
         // date format to timestamp
         $date = Carbon::now()->timestamp;
         $role = $user->role->can;
-        $token = $user->createToken($date, $role)->plainTextToken;
+        $token = $user->createToken($date, $role,  now()->addWeek())->plainTextToken;
         return ResponseHelpers::success(['token' => $token], 'Successfully create Token');
     }
 
@@ -40,5 +40,12 @@ class AuthController extends Controller
     {
         $request->user()->currentAccessToken()->delete();
         return ResponseHelpers::success(null, 'Successfully logout');
+    }
+
+    public function status (Request $request)
+    {
+        // get user detail
+        $user = $request->user();
+        return ResponseHelpers::success($user);
     }
 }

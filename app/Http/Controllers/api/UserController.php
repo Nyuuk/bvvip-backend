@@ -4,6 +4,7 @@ namespace App\Http\Controllers\api;
 
 use App\Helpers\ResponseHelpers;
 use App\Http\Controllers\Controller;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -47,18 +48,19 @@ class UserController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8'],
             'confirm_password' => ['required', 'string', 'same:password'],
-            'role' => ['required', 'string', 'exists:roles'],
+            'role' => ['required', 'string', 'exists:roles,name'],
         ], $messages, $attributes);
 
         if ($validator->fails()) {
             return ResponseHelpers::validation($validator->messages());
         }
 
+        $roleId = Role::where('name', $request->role)->first();
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => $request->role,
+            'role_id' => $roleId->id,
         ]);
 
         return ResponseHelpers::success($user, 'User created successfully');
