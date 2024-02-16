@@ -5,7 +5,7 @@ namespace App\Helpers;
 
 class ResponseHelpers
 {
-    public static function success($data, $message = 'Success')
+    public static function success($data = [], $message = 'Success')
     {
         return response()->json([
             'status' => true,
