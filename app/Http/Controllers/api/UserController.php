@@ -26,6 +26,10 @@ class UserController extends Controller
     public function store(Request $request)
     {
         //
+        if (env('APP_ENV') == 'production') {
+            return ResponseHelpers::error(null, 'Unauthorized', 401);
+        }
+
         $messages = [
             'required' => 'The :attribute field is required.',
             'email' => 'The :attribute must be a valid email address.',
