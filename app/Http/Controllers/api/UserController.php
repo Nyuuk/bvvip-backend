@@ -51,7 +51,7 @@ class UserController extends Controller
         ], $messages, $attributes);
 
         if ($validator->fails()) {
-            return ResponseHelpers::validation($validator->messages(), $attributes);
+            return ResponseHelpers::validation($validator->messages());
         }
 
         $user = User::create([
@@ -116,7 +116,7 @@ class UserController extends Controller
         ], $messages, $attributes);
 
         if ($validator->fails()) {
-            return ResponseHelpers::validation($validator->messages(), $attributes);
+            return ResponseHelpers::validation($validator->messages());
         }
         $data = [];
 
