@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('port');
             $table->string('username');
             $table->string('password');
+            $table->string('status');
             $table->timestamps();
         });
     }

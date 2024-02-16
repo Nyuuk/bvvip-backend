@@ -19,7 +19,8 @@ class ServerSeeder extends Seeder
             'port' => '8000',
             'username' => 'asep',
             'password' => 'asepasep1010',
-            'token' => null
+            'token' => null,
+            'status' => 'paid'
         ]);
         \App\Models\Server::create([
             'name' => "sg",
@@ -27,7 +28,8 @@ class ServerSeeder extends Seeder
             'port' => '8000',
             'username' => 'asep',
             'password' => 'asepasep1010',
-            'token' => null
+            'token' => null,
+            'status' => 'paid'
         ]);
     }
 }
