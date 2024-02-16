@@ -11,6 +11,10 @@ class Role extends Model
 
     protected $guarded = [];
 
+    protected $casts = [
+        'can' => 'array'
+    ];
+
     public function users()
     {
         return $this->hasMany(User::class);
