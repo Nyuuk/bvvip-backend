@@ -36,7 +36,7 @@ class AuthController extends Controller
         return ResponseHelpers::success(['token' => $token], 'Successfully create Token');
     }
 
-    public function logout(Request $request)
+    public function revokeToken(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
         return ResponseHelpers::success(null, 'Successfully logout');
