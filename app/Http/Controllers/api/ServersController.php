@@ -7,16 +7,42 @@ use App\Http\Controllers\Controller;
 use App\Models\Server;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class ServersController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum')->only(['store', 'update', 'destroy', 'index']);
+    }
+    public function index(Request $request)
     {
         //
-        $data = Server::all();
+        $bearer = $request->bearerToken();
+        $token = PersonalAccessToken::findToken($bearer);
+        $user = $token ? $token->tokenable : null;
+        $query = Server::query();
+        $data = [];
+
+        if (!$bearer) {
+            $data = $query->where('status', 'free')->get();
+        } elseif ($user->tokenCans(['r-server-free', 'r-server-paid'])) {
+            $data = $query->get();
+        } elseif ($user->tokenCan('r-server-free')) {
+            $data = $query->where('status', 'free')->get();
+        } elseif ($user->tokenCan('r-server-paid')) {
+            $data = $query->where('status', 'paid')->get();
+        }
+        return ResponseHelpers::send($data, 200, $user ? "authorized" : "unauthorized");
+    }
+
+    public function indexFreeUser()
+    {
+        //
+        $data = Server::where('status', 'free')->get();
         return ResponseHelpers::send($data);
     }
 
