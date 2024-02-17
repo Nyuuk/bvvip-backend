@@ -22,7 +22,7 @@ class ServersController extends Controller
     {
         //
         $user = $request->user();
-        $query = Server::query();
+        $query = Server::query()->select(['id', 'name', 'status']);
         $data = [];
 
         if (!$user) {
@@ -40,7 +40,7 @@ class ServersController extends Controller
     public function indexFreeUser()
     {
         //
-        $data = Server::where('status', 'free')->get();
+        $data = Server::where('status', 'free')->select(['id', 'name', 'status'])->get();
         return ResponseHelpers::send($data);
     }
 
