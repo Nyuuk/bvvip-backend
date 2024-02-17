@@ -21,15 +21,13 @@ class ServersController extends Controller
     public function index(Request $request)
     {
         //
-        $bearer = $request->bearerToken();
-        $token = PersonalAccessToken::findToken($bearer);
-        $user = $token ? $token->tokenable : null;
+        $user = $request->user();
         $query = Server::query();
         $data = [];
 
-        if (!$bearer) {
+        if (!$user) {
             $data = $query->where('status', 'free')->get();
-        } elseif ($user->tokenCans(['r-server-free', 'r-server-paid'])) {
+        } elseif ($user->tokenCan('r-server-paid', 'r-server-free')) {
             $data = $query->get();
         } elseif ($user->tokenCan('r-server-free')) {
             $data = $query->where('status', 'free')->get();
